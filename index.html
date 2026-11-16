@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,14 +9,14 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg: #101310;
-  --panel: #171c18;
-  --panel2: #1d241f;
-  --text: #e8eee8;
-  --muted: #9aa69b;
-  --accent: #a8e6b2;
-  --accent2: #70bd85;
-  --line: #303a32;
+  --bg: #111522;
+  --panel: #1a2031;
+  --panel2: #222b40;
+  --text: #f0eff8;
+  --muted: #a8adc3;
+  --accent: #c8b8ff;
+  --accent2: #f4c6a6;
+  --line: #343b55;
   --mono: 'DM Mono', monospace;
   --sans: 'DM Sans', sans-serif;
   --display: 'Space Grotesk', sans-serif;
@@ -32,9 +31,50 @@ body {
   font-family: var(--sans);
   line-height: 1.6;
 }
+/* One stationary moon in the fixed background. */
+.space-backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.moon-window { position: absolute; inset: 0; perspective: 1100px; overflow: visible; }
+.moon {
+  position: absolute; width: clamp(320px, 39vw, 590px); aspect-ratio: 1;
+  right: 4vw; top: 15vh; border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 30% 28%, rgba(255,255,255,.22) 0 2%, transparent 2.5%),
+    radial-gradient(ellipse at 61% 22%, rgba(255,255,255,.12) 0 4%, transparent 4.5%),
+    radial-gradient(ellipse at 68% 60%, rgba(88,113,92,.22) 0 5%, transparent 5.6%),
+    radial-gradient(ellipse at 35% 72%, rgba(88,113,92,.18) 0 7%, transparent 7.6%),
+    radial-gradient(circle at 34% 30%, #e2f1d5 0, #b9d7b8 38%, #779b83 72%, #405e4c 100%);
+  box-shadow: inset -34px -20px 80px rgba(12,25,16,.38), 0 0 95px rgba(168,230,178,.14);
+  opacity: .3;
+}
+.moon::before, .moon::after { content:""; position:absolute; border-radius:50%; background:rgba(73,105,79,.18); filter:blur(1px); }
+.moon::before { width:15%; height:15%; left:20%; top:52%; box-shadow: 180px -210px 0 -22px rgba(73,105,79,.18), 300px 100px 0 -10px rgba(73,105,79,.15); }
+.moon::after { width:9%; height:9%; left:58%; top:38%; box-shadow:-150px 170px 0 8px rgba(73,105,79,.12), 100px 190px 0 -8px rgba(73,105,79,.16); }
+.shooting-star { position:absolute; width:130px; height:2px; opacity:0; transform:rotate(-35deg); transform-origin:right center; background:linear-gradient(90deg, transparent, rgba(190,244,197,.95)); filter:drop-shadow(0 0 5px rgba(168,230,178,.9)); animation:shoot 7.5s linear infinite; }
+.shooting-star::after { content:""; position:absolute; right:-2px; top:-3px; width:8px; height:8px; border-radius:50%; background:#e7ffe9; box-shadow:0 0 12px 3px rgba(168,230,178,.8); }
+.star-one { top:19%; left:72%; animation-delay:0s; }
+.star-two { top:47%; left:87%; animation-delay:2.7s; animation-duration:8.5s; transform:rotate(-28deg) scale(.72); }
+.star-three { top:70%; left:60%; animation-delay:5s; animation-duration:9s; transform:rotate(-40deg) scale(.58); }
+@keyframes shoot { 0%,68% { opacity:0; translate:0 0; } 70% { opacity:1; } 78% { opacity:0; translate:-230px 145px; } 100% { opacity:0; translate:-230px 145px; } }
+.sky-star { position:absolute; width:2px; height:2px; border-radius:50%; background:#e7e3ff; opacity:.45; box-shadow:0 0 5px rgba(215,208,255,.75); animation:twinkle var(--twinkle,4s) ease-in-out infinite alternate; animation-delay:var(--delay,0s); }
+@keyframes twinkle { from { opacity:.18; transform:scale(.7); } to { opacity:.9; transform:scale(1.5); } }
+nav, main, footer { position:relative; z-index:2; }
+
+/* Transparent alien-cat cutout, wandering along the viewport bottom. */
+#pixelCat {
+  position: fixed; left: 0; bottom: 0; z-index: 30;
+  width: 94px; height: auto; max-height: 150px;
+  object-fit: contain; object-position: bottom;
+  pointer-events: none; display: block;
+  will-change: left, transform;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.18));
+}
+@media (max-width: 600px) {
+  #pixelCat { width: 72px; max-height: 116px; }
+}
+
 a { color: inherit; text-decoration: none; }
 button { font: inherit; }
-::selection { background: var(--accent); color: #101310; }
+::selection { background: var(--accent); color: #171426; }
 
 nav {
   position: sticky;
@@ -44,7 +84,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 17px max(6vw, 24px);
-  background: rgba(16,19,16,.88);
+  background: rgba(17,21,34,.86);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(168,230,178,.12);
 }
@@ -64,7 +104,7 @@ nav {
 }
 .nav-links a:hover { color: var(--accent); }
 
-main { max-width: 1100px; margin: auto; padding: 0 30px; }
+main { position: relative; z-index: 1; max-width: 1100px; margin: auto; padding: 0 30px; }
 .hero {
   min-height: 590px;
   display: grid;
@@ -103,42 +143,15 @@ h1 span { color: var(--accent); }
   align-items: center;
   gap: 9px;
 }
-.btn.primary { background: var(--accent); color: #101810; border-color: var(--accent); }
-.btn.primary:hover { background: #c4f3cb; }
+.btn.primary { background: var(--accent); color: #171426; border-color: var(--accent); }
+.btn.primary:hover { background: #ded5ff; }
 .btn.secondary { color: var(--text); background: transparent; }
 .btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-.hero-card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 22px;
-  position: relative;
-  overflow: hidden;
-}
-.hero-card:before {
-  content: "";
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  background: var(--accent);
-  opacity: .07;
-  filter: blur(60px);
-  right: -40px;
-  top: -40px;
-}
-.card-top { display: flex; justify-content: space-between; color: var(--muted); font: 10px var(--mono); }
-.status { color: var(--accent); }
-.hero-art {
-  height: 190px;
-  display: grid;
-  place-items: center;
-  margin: 10px 0;
-}
-.hero-art svg { width: 100%; max-width: 240px; }
-.card-bottom { border-top: 1px solid var(--line); padding-top: 15px; }
-.card-bottom strong { display: block; font: 17px var(--display); }
-.card-bottom small { color: var(--muted); font: 10px var(--mono); }
+/* Procedural ASCII globe: continuously rotating, pointer-responsive. */
+.earth-stage { position:relative; display:grid; place-items:center; min-height:390px; isolation:isolate; perspective:900px; }
+.earth-stage::before { content:""; position:absolute; width:88%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle, rgba(77,160,210,.20), rgba(77,160,210,.055) 52%, transparent 72%); filter:blur(18px); z-index:-1; }
+#asciiEarth { width:min(100%,430px); height:auto; display:block; overflow:visible; }
 
 section { padding: 75px 0; border-top: 1px solid var(--line); }
 .section-heading {
@@ -244,6 +257,7 @@ section { padding: 75px 0; border-top: 1px solid var(--line); }
 }
 .puzzle-header {
   display: flex;
+  cursor: pointer;
   align-items: center;
   gap: 17px;
   padding: 19px 21px;
@@ -253,6 +267,7 @@ section { padding: 75px 0; border-top: 1px solid var(--line); }
 .puzzle-header:hover { background: var(--panel2); }
 .puzzle-index { color: var(--accent); font: 11px var(--mono); }
 .puzzle-title { font: 600 16px var(--display); flex: 1; }
+.puzzle-date { color: var(--accent); white-space:nowrap; font: 9px var(--mono); border:1px solid rgba(168,230,178,.22); background:rgba(168,230,178,.06); border-radius:3px; padding:4px 7px; }
 .puzzle-type { color: var(--muted); font: 9px var(--mono); }
 .puzzle-toggle { color: var(--accent); font-size: 20px; transition: transform .2s; }
 .puzzle.open .puzzle-toggle { transform: rotate(45deg); }
@@ -261,7 +276,7 @@ section { padding: 75px 0; border-top: 1px solid var(--line); }
 .puzzle-description { color: var(--muted); font-size: 13px; max-width: 700px; margin: 0 0 18px; }
 .demo {
   border: 1px solid var(--line);
-  background: #101510;
+  background: #151a2a;
   border-radius: 5px;
   padding: 17px;
 }
@@ -292,13 +307,13 @@ section { padding: 75px 0; border-top: 1px solid var(--line); }
   display: grid;
   place-items: center;
   border: 1px solid rgba(120,150,125,.12);
-  background: #1a211b;
+  background: #20273a;
   font-size: 14px;
   min-width: 0;
   cursor: pointer;
   transition: background .15s;
 }
-.cell:nth-child(odd) { background: #202a21; }
+.cell:nth-child(odd) { background: #283149; }
 .cell.start { background: var(--accent); color: #111; font-weight: bold; }
 .cell.move { background: #395b40; color: var(--accent); }
 .cell.visited { background: #304c36; color: #d2f6d7; }
@@ -307,7 +322,7 @@ section { padding: 75px 0; border-top: 1px solid var(--line); }
 .mirror-cell {
   display: grid;
   place-items: center;
-  background: #192019;
+  background: #20273a;
   border: 1px solid #28352a;
   font-size: 18px;
   min-width: 0;
@@ -347,6 +362,8 @@ section { padding: 75px 0; border-top: 1px solid var(--line); }
 .award-card p { color: var(--muted); font-size: 13px; }
 
 footer {
+  position: relative;
+  z-index: 1;
   border-top: 1px solid var(--line);
   padding: 35px 30px;
   text-align: center;
@@ -358,11 +375,17 @@ footer span { color: var(--accent); }
 .reveal { opacity: 0; transform: translateY(15px); transition: .65s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+@media (prefers-reduced-motion: reduce) {
+  .orbit-node, .sky-star { animation: none !important; }
+  #asciiEarth { animation:none; }
+  #pixelCat { animation: none !important; }
+}
+
 @media(max-width: 760px) {
   .nav-links { gap: 13px; }
   .nav-links a { font-size: 9px; }
   .hero { grid-template-columns: 1fr; padding: 65px 0; gap: 35px; }
-  .hero-card { max-width: 400px; }
+  .earth-stage { min-height: 300px; }
   h1 { letter-spacing: -3px; }
   .experience { grid-template-columns: 1fr; gap: 8px; }
   .project-grid, .skills-grid, .puzzle-list { grid-template-columns: 1fr; }
@@ -375,11 +398,20 @@ footer span { color: var(--accent); }
   .nav-links a { font-size: 8px; }
   .logo { font-size: 15px; }
   .puzzle-type { display: none; }
+  .moon { right:4vw; width:min(58vw, 360px); top:13vh; }
   .official-preview { height: 280px; }
 }
 </style>
 </head>
 <body>
+<div class="space-backdrop" aria-hidden="true">
+  <div class="moon-window"><div class="moon" id="scrollMoon"></div></div>
+  <span class="shooting-star star-one"></span>
+  <span class="shooting-star star-two"></span>
+  <span class="shooting-star star-three"></span>
+  <div id="starfield"></div>
+</div>
+<img id="pixelCat" src="alien-cat.png" alt="" aria-hidden="true">
 
 <nav>
   <a class="logo" href="#home">KY<span>.</span></a>
@@ -387,6 +419,7 @@ footer span { color: var(--accent); }
     <a href="#experience">EXPERIENCE</a>
     <a href="#projects">PROJECTS</a>
     <a href="#puzzles">PUZZLES</a>
+    <a href="#ibm-puzzles">IBM</a>
     <a href="#about">ABOUT</a>
   </div>
 </nav>
@@ -408,31 +441,8 @@ footer span { color: var(--accent); }
       </div>
     </div>
 
-    <div class="hero-card">
-      <div class="card-top">
-        <span>PERSONAL PROFILE / 001</span>
-        <span class="status">● AVAILABLE</span>
-      </div>
-      <div class="hero-art">
-        <svg viewBox="0 0 240 190" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g stroke="#45634b" stroke-width="1">
-            <path d="M20 20H220M20 50H220M20 80H220M20 110H220M20 140H220M20 170H220"/>
-            <path d="M30 10V180M60 10V180M90 10V180M120 10V180M150 10V180M180 10V180M210 10V180"/>
-          </g>
-          <path d="M30 140L60 110L90 120L120 65L150 85L180 40L210 55" stroke="#A8E6B2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <g fill="#A8E6B2">
-            <circle cx="30" cy="140" r="4"/><circle cx="60" cy="110" r="4"/>
-            <circle cx="90" cy="120" r="4"/><circle cx="120" cy="65" r="4"/>
-            <circle cx="150" cy="85" r="4"/><circle cx="180" cy="40" r="4"/>
-            <circle cx="210" cy="55" r="4"/>
-          </g>
-          <circle cx="120" cy="65" r="13" stroke="#A8E6B2" opacity=".3"/>
-        </svg>
-      </div>
-      <div class="card-bottom">
-        <strong>Building things. Solving problems.</strong>
-        <small>DATA ENGINEERING / SOFTWARE / PUZZLES</small>
-      </div>
+    <div class="earth-stage" id="earth-interactive">
+      <canvas id="asciiEarth" width="520" height="520" aria-label="A rotating ASCII rendering of planet Earth"></canvas>
     </div>
   </header>
 
@@ -568,9 +578,10 @@ footer span { color: var(--accent); }
 
     <div class="puzzle-list">
       <article class="puzzle">
-        <div class="puzzle-header">
+        <div class="puzzle-header" onclick="togglePuzzle(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePuzzle(this)}">
           <span class="puzzle-index">01</span>
           <span class="puzzle-title">Andy's Afternoon Amble</span>
+          <span class="puzzle-date">AUG 2026</span>
           <span class="puzzle-type">PROBABILITY / MARKOV CHAINS</span>
         </div>
         <div class="puzzle-content">
@@ -585,9 +596,10 @@ footer span { color: var(--accent); }
       </article>
 
       <article class="puzzle">
-        <div class="puzzle-header">
-          <span class="puzzle-index">02</span>
+        <div class="puzzle-header" onclick="togglePuzzle(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePuzzle(this)}">
+                    <span class="puzzle-index">02</span>
           <span class="puzzle-title">Hall of Mirrors 3</span>
+          <span class="puzzle-date">MAR 2025</span>
           <span class="puzzle-type">GEOMETRY / CONSTRAINT SOLVING</span>
         </div>
         <div class="puzzle-content">
@@ -602,9 +614,10 @@ footer span { color: var(--accent); }
       </article>
 
       <article class="puzzle">
-        <div class="puzzle-header">
+        <div class="puzzle-header" onclick="togglePuzzle(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePuzzle(this)}">
           <span class="puzzle-index">03</span>
           <span class="puzzle-title">Subtiles 2</span>
+          <span class="puzzle-date">FEB 2026</span>
           <span class="puzzle-type">TILING / COMBINATORICS</span>
         </div>
         <div class="puzzle-content">
@@ -619,9 +632,10 @@ footer span { color: var(--accent); }
       </article>
 
       <article class="puzzle">
-        <div class="puzzle-header">
+        <div class="puzzle-header" onclick="togglePuzzle(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePuzzle(this)}">
           <span class="puzzle-index">04</span>
           <span class="puzzle-title">'Pent-Up' Frustration 3 / Knight Moves 7</span>
+          <span class="puzzle-date">JUL 2026</span>
           <span class="puzzle-type">GRAPH SEARCH / PATH RECONSTRUCTION</span>
         </div>
         <div class="puzzle-content">
@@ -636,9 +650,10 @@ footer span { color: var(--accent); }
       </article>
 
       <article class="puzzle">
-        <div class="puzzle-header">
+        <div class="puzzle-header" onclick="togglePuzzle(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePuzzle(this)}">
           <span class="puzzle-index">05</span>
           <span class="puzzle-title">It's a Metric, Too</span>
+          <span class="puzzle-date">OCT 2026</span>
           <span class="puzzle-type">SYMMETRY / COMBINATORICS</span>
         </div>
         <div class="puzzle-content">
@@ -653,9 +668,10 @@ footer span { color: var(--accent); }
       </article>
 
       <article class="puzzle">
-        <div class="puzzle-header">
+        <div class="puzzle-header" onclick="togglePuzzle(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePuzzle(this)}">
           <span class="puzzle-index">06</span>
           <span class="puzzle-title">Pressure Points</span>
+          <span class="puzzle-date">NOV 2026</span>
           <span class="puzzle-type">WORD / PATTERN RECOGNITION</span>
         </div>
         <div class="puzzle-content">
@@ -671,10 +687,39 @@ footer span { color: var(--accent); }
     </div>
   </section>
 
+  <section id="ibm-puzzles" class="reveal">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">04 / RESEARCH PUZZLES</div>
+        <h2>IBM Research</h2>
+      </div>
+      <div class="section-number">PONDER THIS</div>
+    </div>
+    <p class="section-intro">Also on my puzzle-reading list: <a href="https://research.ibm.com/blog/ponder-this-august-2026" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:underline">IBM Research · Ponder This (August 2026) ↗</a></p>
+    <div class="puzzle-list">
+      <article class="puzzle">
+        <div class="puzzle-header" onclick="togglePuzzle(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePuzzle(this)}">
+          <span class="puzzle-index">01</span>
+          <span class="puzzle-title">The Wheel of Buttons</span>
+          <span class="puzzle-date">AUG 2026</span>
+          <span class="puzzle-type">COMBINATORICS / STRATEGY</span>
+        </div>
+        <div class="puzzle-content">
+          <p class="puzzle-description">A rotating button-wheel challenge: find a strategy that guarantees every button is switched on, even when the wheel's rotations work against you.</p>
+          <div class="puzzle-links">
+            <a class="puzzle-link" href="https://research.ibm.com/blog/ponder-this-august-2026" target="_blank" rel="noopener">IBM Research challenge ↗</a>
+            <a class="puzzle-link muted" href="https://research.ibm.com/labs/israel/ponder-this" target="_blank" rel="noopener">Ponder This archive ↗</a>
+          </div>
+          <div class="preview-caption">PONDER THIS · AUGUST 2026 · THE WHEEL OF BUTTONS</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
   <section id="about" class="reveal">
     <div class="section-heading">
       <div>
-        <div class="eyebrow">04 / A LITTLE MORE</div>
+        <div class="eyebrow">05 / A LITTLE MORE</div>
         <h2>About & Skills</h2>
       </div>
       <div class="section-number">BEYOND THE RESUME</div>
@@ -708,7 +753,7 @@ footer span { color: var(--accent); }
   <section class="reveal">
     <div class="section-heading">
       <div>
-        <div class="eyebrow">05 / EDUCATION</div>
+        <div class="eyebrow">06 / EDUCATION</div>
         <h2>Education</h2>
       </div>
     </div>
@@ -725,6 +770,104 @@ footer span { color: var(--accent); }
 </footer>
 
 <script>
+  function togglePuzzle(header) { header.parentElement.classList.toggle('open'); }
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Dense, colored ASCII Earth. Pointer movement gently changes its viewing angle.
+  const earthCanvas = document.getElementById('asciiEarth');
+  const earthStage = document.getElementById('earth-interactive');
+  if (earthCanvas && earthStage) {
+    const ctx = earthCanvas.getContext('2d');
+    let pointerX=0, pointerY=0, spin=0, last=0;
+    earthStage.addEventListener('pointermove', e => {
+      const r=earthStage.getBoundingClientRect();
+      pointerX=((e.clientX-r.left)/r.width-.5)*.8;
+      pointerY=((e.clientY-r.top)/r.height-.5)*.55;
+    });
+    earthStage.addEventListener('pointerleave',()=>{pointerX=0;pointerY=0;});
+    function renderEarth(t) {
+      const dt=Math.min(.05,(t-last)/1000||.016); last=t;
+      if(!reduceMotion) spin+=dt*.34;
+      const chars=' .,:;irsXA253hMHGS#9B&@', cols=52, rows=27;
+      ctx.clearRect(0,0,520,520); ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font='bold 13px "DM Mono", monospace';
+      const rot=spin+pointerX*.9, tilt=pointerY;
+      for(let j=0;j<rows;j++) for(let i=0;i<cols;i++) {
+        const sx=(i-(cols-1)/2)/23, sy=((rows-1)/2-j)/12, rr=sx*sx+sy*sy;
+        if(rr>1) continue;
+        const z=Math.sqrt(1-rr), x=sx*Math.cos(rot)-z*Math.sin(rot), zz=sx*Math.sin(rot)+z*Math.cos(rot);
+        const y=sy*Math.cos(tilt)-zz*Math.sin(tilt); const depth=sy*Math.sin(tilt)+zz*Math.cos(tilt);
+        const n=Math.sin(x*7.1+y*3.8+Math.sin(depth*5.2))*.42+Math.sin(y*10.4-depth*4.1+x*2.7)*.31+Math.cos(x*13.2-depth*8.1+y*2.1)*.19+Math.sin(y*22+x*17+depth*9)*.08;
+        const land=n>.18, light=Math.max(0,x*-.42+y*.2+depth*.88), idx=Math.min(chars.length-1,Math.max(0,Math.floor((.18+light*.82)*(chars.length-1))));
+        ctx.fillStyle=land?`rgba(${130+Math.floor(light*90)},${220+Math.floor(light*35)},${155+Math.floor(light*75)},${.8+light*.2})`:`rgba(${90+Math.floor(light*65)},${165+Math.floor(light*80)},${235+Math.floor(light*20)},${.8+light*.2})`;
+        ctx.fillText(chars[idx],260+sx*225,260-sy*225);
+      }
+      if(!reduceMotion) requestAnimationFrame(renderEarth);
+    }
+    requestAnimationFrame(renderEarth);
+  }
+
+  // More stars across the entire background, with gentle independent twinkling.
+  const starfield=document.getElementById('starfield');
+  if(starfield) for(let i=0;i<150;i++) {
+    const star=document.createElement('i'); star.className='sky-star';
+    star.style.left=(Math.random()*100)+'%'; star.style.top=(Math.random()*100)+'%';
+    const size=Math.random()*2.2+.7; star.style.width=size+'px'; star.style.height=size+'px';
+    star.style.setProperty('--twinkle',(2.5+Math.random()*5)+'s'); star.style.setProperty('--delay',(-Math.random()*7)+'s'); starfield.appendChild(star);
+  }
+
+  /* The moon is intentionally static: no scroll or resize handlers affect it. */
+
+  /* Transparent alien cat wanders across the bottom of the viewport. */
+  (() => {
+    const cat = document.getElementById('pixelCat');
+    if (!cat) return;
+    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let x = -110;
+    let previous = 0;
+    let direction = 1;
+    const speed = 38; // CSS pixels per second.
+
+    function animate(timestamp) {
+      if (!previous) previous = timestamp;
+      const dt = Math.min(0.05, (timestamp - previous) / 1000);
+      previous = timestamp;
+
+      if (!reduceMotionQuery.matches) {
+        x += speed * dt * direction;
+        const catWidth = cat.getBoundingClientRect().width || 94;
+        if (direction > 0 && x >= window.innerWidth + 8) {
+          direction = -1;
+          x = window.innerWidth + 8;
+        } else if (direction < 0 && x <= -catWidth - 8) {
+          direction = 1;
+          x = -catWidth - 8;
+        }
+      }
+      cat.style.left = `${x}px`;
+      cat.style.transform = direction < 0 ? 'scaleX(-1)' : 'scaleX(1)';
+      if (!reduceMotionQuery.matches) requestAnimationFrame(animate);
+    }
+
+    if (reduceMotionQuery.matches) {
+      x = 12;
+      cat.style.left = `${x}px`;
+    } else {
+      requestAnimationFrame(animate);
+    }
+
+    reduceMotionQuery.addEventListener?.('change', event => {
+      if (event.matches) {
+        x = 12;
+        cat.style.left = `${x}px`;
+        cat.style.transform = 'scaleX(1)';
+      } else {
+        previous = 0;
+        requestAnimationFrame(animate);
+      }
+    });
+  })();
+
   /* Scroll reveal */
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
