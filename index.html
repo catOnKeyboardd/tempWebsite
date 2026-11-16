@@ -1,0 +1,737 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101310">
+<title>Kevin Yu — Portfolio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #101310;
+  --panel: #171c18;
+  --panel2: #1d241f;
+  --text: #e8eee8;
+  --muted: #9aa69b;
+  --accent: #a8e6b2;
+  --accent2: #70bd85;
+  --line: #303a32;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --display: 'Space Grotesk', sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+::selection { background: var(--accent); color: #101310; }
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px max(6vw, 24px);
+  background: rgba(16,19,16,.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(168,230,178,.12);
+}
+.logo {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -.7px;
+}
+.logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+main { max-width: 1100px; margin: auto; padding: 0 30px; }
+.hero {
+  min-height: 590px;
+  display: grid;
+  grid-template-columns: 1.35fr .65fr;
+  align-items: center;
+  gap: 60px;
+  padding: 90px 0 75px;
+}
+.eyebrow {
+  color: var(--accent);
+  font: 11px var(--mono);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+h1 {
+  font: 600 clamp(48px, 7vw, 82px)/1.04 var(--display);
+  letter-spacing: -5px;
+  margin: 22px 0;
+}
+h1 span { color: var(--accent); }
+.hero-description {
+  max-width: 570px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.9;
+}
+.hero-actions { display: flex; gap: 13px; margin-top: 30px; flex-wrap: wrap; }
+.btn {
+  padding: 11px 17px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  font: 11px var(--mono);
+  cursor: pointer;
+  transition: .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.btn.primary { background: var(--accent); color: #101810; border-color: var(--accent); }
+.btn.primary:hover { background: #c4f3cb; }
+.btn.secondary { color: var(--text); background: transparent; }
+.btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+.hero-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-card:before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: var(--accent);
+  opacity: .07;
+  filter: blur(60px);
+  right: -40px;
+  top: -40px;
+}
+.card-top { display: flex; justify-content: space-between; color: var(--muted); font: 10px var(--mono); }
+.status { color: var(--accent); }
+.hero-art {
+  height: 190px;
+  display: grid;
+  place-items: center;
+  margin: 10px 0;
+}
+.hero-art svg { width: 100%; max-width: 240px; }
+.card-bottom { border-top: 1px solid var(--line); padding-top: 15px; }
+.card-bottom strong { display: block; font: 17px var(--display); }
+.card-bottom small { color: var(--muted); font: 10px var(--mono); }
+
+section { padding: 75px 0; border-top: 1px solid var(--line); }
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 34px;
+  gap: 20px;
+}
+.section-heading h2 {
+  font: 600 36px var(--display);
+  letter-spacing: -1.7px;
+  margin: 8px 0 0;
+}
+.section-number { color: var(--muted); font: 11px var(--mono); }
+.section-intro { color: var(--muted); max-width: 590px; margin: -18px 0 30px; font-size: 14px; }
+
+.experience-list { display: grid; gap: 14px; }
+.experience {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 28px;
+  padding: 23px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  transition: border-color .2s, transform .2s;
+}
+.experience:hover { border-color: #58765e; transform: translateY(-2px); }
+.exp-date { color: var(--accent); font: 10px var(--mono); padding-top: 5px; }
+.exp-company { font: 600 19px var(--display); }
+.exp-role { color: var(--muted); font-size: 12px; margin-top: 3px; }
+.exp-details { margin: 13px 0 0; padding-left: 17px; color: #b5c0b6; font-size: 13px; }
+.exp-details li { margin: 5px 0; }
+.tag-row { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 13px; }
+.tag {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  border-radius: 3px;
+  padding: 3px 7px;
+  font: 9px var(--mono);
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+.project {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 23px;
+  border-radius: 6px;
+  min-height: 205px;
+  transition: .2s;
+}
+.project:hover { border-color: var(--accent2); transform: translateY(-3px); }
+.project-meta { color: var(--accent); font: 10px var(--mono); }
+.project h3 { font: 600 20px var(--display); margin: 13px 0 8px; }
+.project p { color: var(--muted); font-size: 13px; margin: 0; }
+.project .tag-row { margin-top: 18px; }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 13px;
+}
+.skill-group {
+  padding: 19px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+}
+.skill-group h3 { color: var(--accent); font: 11px var(--mono); margin: 0 0 12px; }
+.skill-group p { color: #bdc8be; font-size: 12px; line-height: 2; margin: 0; }
+
+.puzzle-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.puzzle { min-width: 0; }
+.puzzle-header { cursor: default; }
+.puzzle-content { display: block; padding: 0 18px 18px; }
+.puzzle-links { display: flex; gap: 9px; flex-wrap: wrap; margin: 0 0 14px; }
+.puzzle-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 10px; border: 1px solid var(--line); border-radius: 4px;
+  color: var(--accent); font: 10px var(--mono); transition: .2s;
+}
+.puzzle-link:hover { border-color: var(--accent); background: rgba(168,230,178,.07); }
+.puzzle-link.muted { color: var(--muted); }
+.official-preview {
+  position: relative; overflow: hidden; border: 1px solid var(--line);
+  border-radius: 5px; background: #fff; height: 310px;
+}
+.official-preview iframe { display: block; width: 100%; height: 100%; border: 0; background: #fff; }
+.preview-caption { color: var(--muted); font: 9px var(--mono); margin-top: 8px; }
+.puzzle-description { min-height: 58px; }
+.puzzle-type { white-space: nowrap; }
+.skills-grid { grid-template-columns: repeat(4, 1fr); }
+.puzzle {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--panel);
+}
+.puzzle-header {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 19px 21px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.puzzle-header:hover { background: var(--panel2); }
+.puzzle-index { color: var(--accent); font: 11px var(--mono); }
+.puzzle-title { font: 600 16px var(--display); flex: 1; }
+.puzzle-type { color: var(--muted); font: 9px var(--mono); }
+.puzzle-toggle { color: var(--accent); font-size: 20px; transition: transform .2s; }
+.puzzle.open .puzzle-toggle { transform: rotate(45deg); }
+.puzzle-content { display: none; padding: 0 21px 23px; }
+.puzzle.open .puzzle-content { display: block; }
+.puzzle-description { color: var(--muted); font-size: 13px; max-width: 700px; margin: 0 0 18px; }
+.demo {
+  border: 1px solid var(--line);
+  background: #101510;
+  border-radius: 5px;
+  padding: 17px;
+}
+.demo-label { color: var(--muted); font: 9px var(--mono); margin-bottom: 12px; }
+.demo-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 13px; }
+.demo-btn {
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 7px 11px;
+  border-radius: 3px;
+  font: 10px var(--mono);
+  cursor: pointer;
+}
+.demo-btn:hover { color: var(--accent); border-color: var(--accent); }
+.demo-output { color: var(--accent); font: 11px var(--mono); margin-top: 12px; min-height: 17px; }
+
+.knight-board, .mirror-board, .symmetry-board {
+  display: grid;
+  margin: auto;
+  width: min(100%, 340px);
+  aspect-ratio: 1;
+  border: 1px solid #455448;
+}
+.knight-board { grid-template-columns: repeat(7, 1fr); }
+.symmetry-board { grid-template-columns: repeat(11, 1fr); }
+.cell {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(120,150,125,.12);
+  background: #1a211b;
+  font-size: 14px;
+  min-width: 0;
+  cursor: pointer;
+  transition: background .15s;
+}
+.cell:nth-child(odd) { background: #202a21; }
+.cell.start { background: var(--accent); color: #111; font-weight: bold; }
+.cell.move { background: #395b40; color: var(--accent); }
+.cell.visited { background: #304c36; color: #d2f6d7; }
+.cell.selected { outline: 2px solid var(--accent); outline-offset: -2px; }
+.mirror-board { grid-template-columns: repeat(9, 1fr); }
+.mirror-cell {
+  display: grid;
+  place-items: center;
+  background: #192019;
+  border: 1px solid #28352a;
+  font-size: 18px;
+  min-width: 0;
+}
+.mirror-cell.mirror { color: var(--accent); }
+.mirror-cell.beam { background: #344a36; color: #d7f6db; }
+.mirror-cell.hit { background: var(--accent); color: #111; }
+
+.tile-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  max-width: 270px;
+  margin: auto;
+}
+.tile {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: #26352a;
+  color: var(--accent);
+  border: 1px solid #45604a;
+  border-radius: 3px;
+  font: 15px var(--mono);
+  cursor: pointer;
+}
+.tile:hover { background: #3b5941; }
+.metric-info { text-align: center; color: var(--muted); font: 10px var(--mono); margin-top: 10px; }
+
+.award-card {
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 6px;
+}
+.award-card strong { font: 17px var(--display); }
+.award-card p { color: var(--muted); font-size: 13px; }
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 35px 30px;
+  text-align: center;
+  color: var(--muted);
+  font: 10px var(--mono);
+}
+footer span { color: var(--accent); }
+
+.reveal { opacity: 0; transform: translateY(15px); transition: .65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media(max-width: 760px) {
+  .nav-links { gap: 13px; }
+  .nav-links a { font-size: 9px; }
+  .hero { grid-template-columns: 1fr; padding: 65px 0; gap: 35px; }
+  .hero-card { max-width: 400px; }
+  h1 { letter-spacing: -3px; }
+  .experience { grid-template-columns: 1fr; gap: 8px; }
+  .project-grid, .skills-grid, .puzzle-list { grid-template-columns: 1fr; }
+  .section-heading h2 { font-size: 30px; }
+  main { padding: 0 20px; }
+}
+@media(max-width: 430px) {
+  nav { padding: 15px 16px; }
+  .nav-links { gap: 10px; }
+  .nav-links a { font-size: 8px; }
+  .logo { font-size: 15px; }
+  .puzzle-type { display: none; }
+  .official-preview { height: 280px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#home">KY<span>.</span></a>
+  <div class="nav-links">
+    <a href="#experience">EXPERIENCE</a>
+    <a href="#projects">PROJECTS</a>
+    <a href="#puzzles">PUZZLES</a>
+    <a href="#about">ABOUT</a>
+  </div>
+</nav>
+
+<main>
+  <header class="hero" id="home">
+    <div>
+      <div class="eyebrow">Computer Science · University of Ottawa</div>
+      <h1>Kevin<br><span>Yu.</span></h1>
+      <p class="hero-description">
+        I build data systems, experiment with machine learning, and enjoy
+        solving problems that require a little more than the obvious approach.
+        Interested in the intersection of software engineering, data, and
+        computational problem solving.
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#experience">Explore my work ↘</a>
+        <a class="btn secondary" href="https://mail.google.com/mail/?view=cm&fs=1&to=kevin2003yu%40gmail.com" target="_blank" rel="noopener noreferrer">Get in touch ↗</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="card-top">
+        <span>PERSONAL PROFILE / 001</span>
+        <span class="status">● AVAILABLE</span>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 240 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#45634b" stroke-width="1">
+            <path d="M20 20H220M20 50H220M20 80H220M20 110H220M20 140H220M20 170H220"/>
+            <path d="M30 10V180M60 10V180M90 10V180M120 10V180M150 10V180M180 10V180M210 10V180"/>
+          </g>
+          <path d="M30 140L60 110L90 120L120 65L150 85L180 40L210 55" stroke="#A8E6B2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="#A8E6B2">
+            <circle cx="30" cy="140" r="4"/><circle cx="60" cy="110" r="4"/>
+            <circle cx="90" cy="120" r="4"/><circle cx="120" cy="65" r="4"/>
+            <circle cx="150" cy="85" r="4"/><circle cx="180" cy="40" r="4"/>
+            <circle cx="210" cy="55" r="4"/>
+          </g>
+          <circle cx="120" cy="65" r="13" stroke="#A8E6B2" opacity=".3"/>
+        </svg>
+      </div>
+      <div class="card-bottom">
+        <strong>Building things. Solving problems.</strong>
+        <small>DATA ENGINEERING / SOFTWARE / PUZZLES</small>
+      </div>
+    </div>
+  </header>
+
+  <section id="experience" class="reveal">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">01 / WHERE I'VE WORKED</div>
+        <h2>Experience</h2>
+      </div>
+      <div class="section-number">2023 — PRESENT</div>
+    </div>
+
+    <div class="experience-list">
+      <article class="experience">
+        <div>
+          <div class="exp-date">SEP 2026 — PRESENT</div>
+          <div class="exp-company">Mathematica Tech</div>
+          <div class="exp-role">Data Engineer</div>
+        </div>
+        <div>
+          <ul class="exp-details">
+            <li>Developed Python ingestion pipelines for educational content and decompiled code datasets.</li>
+            <li>Generated GraphCodeBERT and UniXcoder embeddings and indexed 5,767 code documents in ChromaDB.</li>
+            <li>Evaluated LLM-based vulnerability classification and CWE identification across 100 queries.</li>
+          </ul>
+          <div class="tag-row"><span class="tag">Python</span><span class="tag">RAG</span><span class="tag">ChromaDB</span><span class="tag">LLMs</span></div>
+        </div>
+      </article>
+
+      <article class="experience">
+        <div>
+          <div class="exp-date">JAN 2026 — AUG 2026</div>
+          <div class="exp-company">Shopify</div>
+          <div class="exp-role">Data Engineer</div>
+        </div>
+        <div>
+          <ul class="exp-details">
+            <li>Redesigned BigQuery historical queries, reducing compute costs by up to 25%.</li>
+            <li>Built and maintained Airflow pipelines supporting merchant activation, POS peripherals, subscriptions, and retail analytics.</li>
+            <li>Improved governed dbt models, data quality, and metric definitions, contributing to 30% faster query performance.</li>
+            <li>Automated warehouse governance with dbt, Airflow, and GitHub APIs, saving 2+ hours per week in manual triage.</li>
+            <li>Contributed to SimGym, a persona-based buyer simulation used to explore merchant feature impact.</li>
+          </ul>
+          <div class="tag-row"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">BigQuery</span><span class="tag">Airflow</span><span class="tag">dbt</span></div>
+        </div>
+      </article>
+
+      <article class="experience">
+        <div>
+          <div class="exp-date">SEP 2024 — DEC 2024</div>
+          <div class="exp-company">Parks Canada</div>
+          <div class="exp-role">Software Engineer</div>
+        </div>
+        <div>
+          <ul class="exp-details">
+            <li>Developed Jenkins and Groovy ETL workflows, improving processing speed by 60%.</li>
+            <li>Implemented CI/CD workflows for 500K+ records, reducing processing errors by 99%.</li>
+            <li>Supported reporting and data analysis through Power BI.</li>
+          </ul>
+          <div class="tag-row"><span class="tag">Python</span><span class="tag">Groovy</span><span class="tag">Jenkins</span><span class="tag">Power BI</span></div>
+        </div>
+      </article>
+
+      <article class="experience">
+        <div>
+          <div class="exp-date">MAY 2023 — AUG 2024</div>
+          <div class="exp-company">Canada Revenue Agency</div>
+          <div class="exp-role">Software Engineer</div>
+        </div>
+        <div>
+          <ul class="exp-details">
+            <li>Automated operational workflows with Python, reducing manual work by 85%.</li>
+            <li>Built Python, Pandas, and PostgreSQL validation processes that improved data checks by 75%.</li>
+            <li>Optimized SQL queries, reducing latency by 25%.</li>
+            <li>Developed Java automation that eliminated approximately 15 hours of weekly manual work.</li>
+          </ul>
+          <div class="tag-row"><span class="tag">Python</span><span class="tag">Java</span><span class="tag">PostgreSQL</span><span class="tag">Pandas</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="projects" class="reveal">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">02 / THINGS I'VE BUILT</div>
+        <h2>Projects</h2>
+      </div>
+      <div class="section-number">SELECTED WORK</div>
+    </div>
+    <div class="project-grid">
+      <article class="project">
+        <div class="project-meta">HONOURS PROJECT · MACHINE LEARNING</div>
+        <h3>RAGVul</h3>
+        <p>A retrieval-augmented vulnerability analysis system for decompiled binaries. Combines code embeddings, vector search, and LLM-based classification to identify potential vulnerabilities and CWE categories.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">RAG</span><span class="tag">GraphCodeBERT</span><span class="tag">ChromaDB</span></div>
+      </article>
+      <article class="project">
+        <div class="project-meta">DATA SCIENCE · IN PROGRESS</div>
+        <h3>Retail Demand Forecasting</h3>
+        <p>Exploring demand forecasting through predictive modelling and evaluation with Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE).</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Scikit-learn</span></div>
+      </article>
+      <article class="project">
+        <div class="project-meta">STUPID IDEAS HACKATHON</div>
+        <h3>Jinge</h3>
+        <p>A dating simulator where players balance winning someone's heart with keeping their company's stock price alive. Branching dialogue choices affect both the relationship and the market.</p>
+        <div class="tag-row"><span class="tag">Game Design</span><span class="tag">JavaScript</span><span class="tag">Interactive Narrative</span></div>
+      </article>
+      <article class="project">
+        <div class="project-meta">HACKATHON · HEALTHCARE</div>
+        <h3>Patient Intake Triage</h3>
+        <p>A prototype exploring camera-based patient intake, heart-rate signals, and conversational AI to support urgency-aware hospital queueing.</p>
+        <div class="tag-row"><span class="tag">Gemini</span><span class="tag">ElevenLabs</span><span class="tag">Presage</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="puzzles" class="reveal">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">03 / COMPUTATIONAL PROBLEM SOLVING</div>
+        <h2>Jane Street Puzzles</h2>
+      </div>
+      <div class="section-number">6 SOLVED</div>
+    </div>
+    <p class="section-intro">
+      Monthly puzzles I've solved for fun, with my name included on each
+      puzzle's solvers list. They span probability, geometry, tiling, graph
+      search, and combinatorics.
+      <a href="https://www.janestreet.com/puzzles/archive/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline">Browse ↗</a>
+    </p>
+
+    <div class="puzzle-list">
+      <article class="puzzle">
+        <div class="puzzle-header">
+          <span class="puzzle-index">01</span>
+          <span class="puzzle-title">Andy's Afternoon Amble</span>
+          <span class="puzzle-type">PROBABILITY / MARKOV CHAINS</span>
+        </div>
+        <div class="puzzle-content">
+          <p class="puzzle-description">A random walk across two different hexagonal surfaces, modelled through symmetry and a small system of probability equations.</p>
+          <div class="puzzle-links">
+            <a class="puzzle-link muted" href="https://www.janestreet.com/puzzles/andys-afternoon-amble-index/" target="_blank" rel="noopener">Original puzzle ↗</a>
+            <a class="puzzle-link" href="https://www.janestreet.com/puzzles/andys-afternoon-amble-solution/" target="_blank" rel="noopener">Published solution ↗</a>
+          </div>
+          <div class="official-preview"><iframe title="Andy's Afternoon Amble official solution" src="https://www.janestreet.com/puzzles/andys-afternoon-amble-solution/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+          <div class="preview-caption">OFFICIAL JANE STREET SOLUTION PAGE · HEXAGONAL WALK DIAGRAM</div>
+        </div>
+      </article>
+
+      <article class="puzzle">
+        <div class="puzzle-header">
+          <span class="puzzle-index">02</span>
+          <span class="puzzle-title">Hall of Mirrors 3</span>
+          <span class="puzzle-type">GEOMETRY / CONSTRAINT SOLVING</span>
+        </div>
+        <div class="puzzle-content">
+          <p class="puzzle-description">A 10 × 10 mirror-placement puzzle where laser paths and segment-length products constrain the locations of diagonal mirrors.</p>
+          <div class="puzzle-links">
+            <a class="puzzle-link muted" href="https://www.janestreet.com/puzzles/hall-of-mirrors-3-index/" target="_blank" rel="noopener">Original puzzle ↗</a>
+            <a class="puzzle-link" href="https://www.janestreet.com/puzzles/hall-of-mirrors-3-solution/" target="_blank" rel="noopener">Published solution ↗</a>
+          </div>
+          <div class="official-preview"><iframe title="Hall of Mirrors 3 official solution" src="https://www.janestreet.com/puzzles/hall-of-mirrors-3-solution/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+          <div class="preview-caption">OFFICIAL JANE STREET SOLUTION PAGE · COMPLETED MIRROR GRID AND LASER CLUES</div>
+        </div>
+      </article>
+
+      <article class="puzzle">
+        <div class="puzzle-header">
+          <span class="puzzle-index">03</span>
+          <span class="puzzle-title">Subtiles 2</span>
+          <span class="puzzle-type">TILING / COMBINATORICS</span>
+        </div>
+        <div class="puzzle-content">
+          <p class="puzzle-description">A nested polyomino tiling in which each numbered region must be connected and contain the shape formed by the previous number.</p>
+          <div class="puzzle-links">
+            <a class="puzzle-link muted" href="https://www.janestreet.com/puzzles/subtiles-2-index/" target="_blank" rel="noopener">Original puzzle ↗</a>
+            <a class="puzzle-link" href="https://www.janestreet.com/puzzles/subtiles-2-solution/" target="_blank" rel="noopener">Published solution ↗</a>
+          </div>
+          <div class="official-preview"><iframe title="Subtiles 2 official solution" src="https://www.janestreet.com/puzzles/subtiles-2-solution/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+          <div class="preview-caption">OFFICIAL JANE STREET SOLUTION PAGE · COMPLETED NUMBERED TILING</div>
+        </div>
+      </article>
+
+      <article class="puzzle">
+        <div class="puzzle-header">
+          <span class="puzzle-index">04</span>
+          <span class="puzzle-title">'Pent-Up' Frustration 3 / Knight Moves 7</span>
+          <span class="puzzle-type">GRAPH SEARCH / PATH RECONSTRUCTION</span>
+        </div>
+        <div class="puzzle-content">
+          <p class="puzzle-description">Reconstruct a three-dimensional knight's route through a board of pentomino regions, using changing scores to infer the path.</p>
+          <div class="puzzle-links">
+            <a class="puzzle-link muted" href="https://www.janestreet.com/puzzles/pent-up-frustration-3-knight-moves-7-index/" target="_blank" rel="noopener">Original puzzle ↗</a>
+            <a class="puzzle-link" href="https://www.janestreet.com/puzzles/pent-up-frustration-3-knight-moves-7-solution/" target="_blank" rel="noopener">Published solution ↗</a>
+          </div>
+          <div class="official-preview"><iframe title="Pent-Up Frustration 3 and Knight Moves 7 official solution" src="https://www.janestreet.com/puzzles/pent-up-frustration-3-knight-moves-7-solution/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+          <div class="preview-caption">OFFICIAL JANE STREET SOLUTION PAGE · NUMBERED KNIGHT PATH AND SCORES</div>
+        </div>
+      </article>
+
+      <article class="puzzle">
+        <div class="puzzle-header">
+          <span class="puzzle-index">05</span>
+          <span class="puzzle-title">It's a Metric, Too</span>
+          <span class="puzzle-type">SYMMETRY / COMBINATORICS</span>
+        </div>
+        <div class="puzzle-content">
+          <p class="puzzle-description">An 11 × 11 region partitioned into connected symmetric states, with travel costs determined by state sizes and capitols.</p>
+          <div class="puzzle-links">
+            <a class="puzzle-link muted" href="https://www.janestreet.com/puzzles/it-s-a-metric-too-index/" target="_blank" rel="noopener">Original puzzle ↗</a>
+            <a class="puzzle-link" href="https://www.janestreet.com/puzzles/it-s-a-metric-too-solution/" target="_blank" rel="noopener">Published solution ↗</a>
+          </div>
+          <div class="official-preview"><iframe title="It's a Metric, Too official solution" src="https://www.janestreet.com/puzzles/it-s-a-metric-too-solution/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+          <div class="preview-caption">OFFICIAL JANE STREET SOLUTION PAGE · 11 × 11 STATE PARTITION</div>
+        </div>
+      </article>
+
+      <article class="puzzle">
+        <div class="puzzle-header">
+          <span class="puzzle-index">06</span>
+          <span class="puzzle-title">Pressure Points</span>
+          <span class="puzzle-type">WORD / PATTERN RECOGNITION</span>
+        </div>
+        <div class="puzzle-content">
+          <p class="puzzle-description">A word-and-symbol puzzle built around a large collection of letter groups and visual clues. The November 2026 puzzle page is currently the official source.</p>
+          <div class="puzzle-links">
+            <a class="puzzle-link" href="https://www.janestreet.com/puzzles/pressure-points-index/" target="_blank" rel="noopener">Official puzzle ↗</a>
+            <a class="puzzle-link muted" href="https://www.janestreet.com/puzzles/archive/" target="_blank" rel="noopener">Jane Street archive ↗</a>
+          </div>
+          <div class="official-preview"><iframe title="Pressure Points official Jane Street puzzle" src="https://www.janestreet.com/puzzles/pressure-points-index/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+          <div class="preview-caption">OFFICIAL JANE STREET PUZZLE PAGE · NOVEMBER 2026</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="about" class="reveal">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">04 / A LITTLE MORE</div>
+        <h2>About & Skills</h2>
+      </div>
+      <div class="section-number">BEYOND THE RESUME</div>
+    </div>
+    <p class="section-intro">
+      I'm a Computer Science student at the University of Ottawa with a
+      particular interest in data engineering, machine learning, and
+      algorithmic problem solving. Outside of work, I enjoy hackathons,
+      puzzles, swimming, and long-distance cycling.
+    </p>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3>LANGUAGES</h3>
+        <p>Python<br>Java<br>SQL<br>R<br>JavaScript</p>
+      </div>
+      <div class="skill-group">
+        <h3>DATA & ML</h3>
+        <p>Airflow · dbt<br>BigQuery · PostgreSQL<br>Pandas · NumPy<br>RAG · Embeddings<br>ChromaDB · Scikit-learn</p>
+      </div>
+      <div class="skill-group">
+        <h3>TOOLS & INFRASTRUCTURE</h3>
+        <p>Git · GitHub<br>AWS · Docker<br>Jenkins · Power BI<br>MySQL<br>CI/CD</p>
+      </div>
+      <div class="skill-group">
+        <h3>OUTSIDE THE KEYBOARD</h3>
+        <p>National-level swimming<br>Long-distance cycling<br>Longest ride: ~400 km<br>Hackathons · Puzzles</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">05 / EDUCATION</div>
+        <h2>Education</h2>
+      </div>
+    </div>
+    <div class="award-card">
+      <strong>University of Ottawa</strong>
+      <p>Honours Bachelor of Science · Computer Science · CO-OP</p>
+      <span class="tag">COMPUTER SCIENCE</span>
+    </div>
+  </section>
+</main>
+
+<footer>
+  DESIGNED & BUILT BY <span>KEVIN YU</span> · 2026
+</footer>
+
+<script>
+  /* Scroll reveal */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: .08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
